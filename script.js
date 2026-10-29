@@ -518,5 +518,38 @@ const _al=applyLang;applyLang=function(){_al();thLabel();const e=lang=='en';bZoo
 let lw=innerWidth;addEventListener('resize',()=>{if(innerWidth!=lw){lw=innerWidth;setZ(dz(iv?1:0))}});
 zRange();setZ(dz(0));applyLang();
 
-if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){
- addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))}
+/* ---- Offline support + "update available" prompt ---- */
+(function(){
+ if(!('serviceWorker' in navigator)||!/^https?:$/.test(location.protocol))return;
+ const TX={ar:{a:'تحديث جديد متاح — اسحب للأسفل للتحديث',r:'أفلت للتحديث',u:'جارٍ التحديث…'},
+           en:{a:'Update available — pull down to update',r:'Release to update',u:'Updating…'}};
+ let box=null,worker=null,state='a',reloading=false;
+ const paint=()=>{if(!box)return;const t=TX[lang][state];box.querySelector('span').textContent=t;box.setAttribute('aria-label',t)};
+ function apply(){if(state==='u')return;state='u';paint();box.classList.remove('ready');box.classList.add('busy');worker&&worker.postMessage('SKIP_WAITING')}
+ function show(w){
+  worker=w;if(box)return;
+  box=document.createElement('button');box.id='upd';box.type='button';
+  box.innerHTML='<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"/><path d="m6 13 6 6 6-6"/></svg><span></span>';
+  document.body.appendChild(box);paint();
+  requestAnimationFrame(()=>requestAnimationFrame(()=>box.classList.add('in')));
+  let y0=null,dy=0;const T=64;
+  const reset=()=>{y0=null;box.classList.remove('drag');box.style.removeProperty('--dy')};
+  box.addEventListener('pointerdown',e=>{if(state==='u')return;y0=e.clientY;dy=0;box.setPointerCapture(e.pointerId);box.classList.add('drag')});
+  box.addEventListener('pointermove',e=>{if(y0===null)return;
+   dy=Math.max(0,e.clientY-y0);box.style.setProperty('--dy',Math.min(dy<T?dy:T+(dy-T)*.25,110)+'px');
+   const r=dy>=T;if(r!==(state==='r')){state=r?'r':'a';box.classList.toggle('ready',r);paint()}});
+  box.addEventListener('pointerup',()=>{if(y0===null)return;const go=state==='r';reset();if(go)apply()});
+  box.addEventListener('pointercancel',()=>{reset();if(state==='r'){state='a';box.classList.remove('ready');paint()}});
+  box.addEventListener('click',e=>{if(e.detail===0)apply()}); /* keyboard: Enter / Space */
+ }
+ const _al=applyLang;applyLang=function(){_al();paint()};
+ addEventListener('load',()=>navigator.serviceWorker.register('sw.js').then(reg=>{
+  const watch=w=>w.addEventListener('statechange',()=>{if(w.state==='installed'&&navigator.serviceWorker.controller)show(w)});
+  if(reg.waiting&&navigator.serviceWorker.controller)show(reg.waiting);
+  reg.addEventListener('updatefound',()=>reg.installing&&watch(reg.installing));
+  const chk=()=>reg.update().catch(()=>{});
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)chk()});
+  setInterval(chk,60*60*1000);
+ }).catch(()=>{}));
+ navigator.serviceWorker.addEventListener('controllerchange',()=>{if(state!=='u'||reloading)return;reloading=true;location.reload()});
+})();

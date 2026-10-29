@@ -298,3 +298,13 @@ html[dir=rtl] .zs{transform-origin:left center}html[dir=ltr] .zs{transform-origi
 #zv{margin-inline-start:auto;white-space:nowrap}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+#upd{position:fixed;z-index:60;top:calc(env(safe-area-inset-top,0px) + 10px);left:50%;width:min(92vw,400px);display:flex;align-items:center;justify-content:center;gap:.7em;padding:12px 18px;border:0;border-radius:999px;background:var(--acc);color:var(--on-acc);font:600 .92rem var(--sans);line-height:1.4;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;box-shadow:0 10px 30px #0a142840;transform:translate(-50%,calc(-160% + var(--dy,0px)));transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+#upd.in{transform:translate(-50%,var(--dy,0px))}
+#upd.drag{transition:none;cursor:grabbing}
+#upd .ico{margin:0;width:1.2em;height:1.2em;transition:transform .25s}
+#upd.in:not(.drag):not(.busy) .ico{animation:nudge 1.6s ease-in-out infinite}
+#upd.ready .ico{transform:rotate(180deg);animation:none}
+#upd.busy{opacity:.85;cursor:progress}
+@keyframes nudge{50%{transform:translateY(3px)}}
+@media print{#upd{display:none!important}}

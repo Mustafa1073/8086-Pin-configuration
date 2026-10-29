@@ -1,9 +1,12 @@
-const CACHE='8086-pins-v1';
+const CACHE='8086-pins-v2';
 const SHELL=['./','index.html','styles.css','script.js'];
 
 self.addEventListener('install',e=>{
-  e.waitUntil(caches.open(CACHE).then(c=>c.addAll(SHELL)).then(()=>self.skipWaiting()));
+  // No skipWaiting here: the page shows "update available" and asks the worker to take over.
+  e.waitUntil(caches.open(CACHE).then(c=>c.addAll(SHELL.map(u=>new Request(u,{cache:'reload'})))));
 });
+
+self.addEventListener('message',e=>{if(e.data==='SKIP_WAITING')self.skipWaiting()});
 
 self.addEventListener('activate',e=>{
   e.waitUntil(caches.keys()
