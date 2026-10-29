@@ -1,5 +1,5 @@
-const CACHE='8086-pins-v2';
-const SHELL=['./','index.html','styles.css','script.js'];
+const CACHE='8086-pins-v3';
+const SHELL=['./','index.html','styles.css','script.js','icon.svg','favicon.svg','manifest.webmanifest','icons/icon-192.png','icons/icon-512.png','icons/icon-maskable-512.png','icons/apple-touch-icon.png','icons/favicon-32.png'];
 
 self.addEventListener('install',e=>{
   // No skipWaiting here: the page shows "update available" and asks the worker to take over.

@@ -308,3 +308,27 @@ html[dir=rtl] .zs{transform-origin:left center}html[dir=ltr] .zs{transform-origi
 #upd.busy{opacity:.85;cursor:progress}
 @keyframes nudge{50%{transform:translateY(3px)}}
 @media print{#upd{display:none!important}}
+
+/* ---- header: title + menu on one row, author badge below ---- */
+header{flex-wrap:nowrap!important;gap:12px;align-items:center}
+.brand{flex:1 1 auto;min-width:0}
+header h1{font-size:clamp(.9rem,5vw,1.5rem);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#bMenu{flex:none;align-self:center}
+.by{display:flex;align-items:center;justify-content:center;gap:14px;max-width:1200px;margin:8px auto 0;padding:22px 20px 26px;direction:ltr;text-transform:uppercase;font:600 .72rem/1 Consolas,"Courier New",monospace;letter-spacing:.32em;color:var(--mut)}
+.by::before,.by::after{content:"";flex:1 1 0;max-width:140px;height:1px;background:linear-gradient(90deg,transparent,var(--gold))}
+.by::after{transform:scaleX(-1)}
+.by span{padding:7px 16px 7px 20px;border:1px dashed var(--gold);border-radius:6px;outline:1px solid var(--line);outline-offset:3px;background:var(--panel);white-space:nowrap}
+.by b{color:var(--gold);font-weight:700}
+/* ---- 8086 internals: back button + tidy toolbar ---- */
+.itop{display:flex;gap:10px;align-items:stretch;margin-bottom:10px}
+.itop .bcr{margin:0;flex:1 1 auto;min-width:0;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin;padding:6px 10px;background:var(--panel);border:1px solid var(--line);border-radius:10px}
+.itop .bcr .chip{flex:none;white-space:nowrap}
+.bk{flex:none;font:inherit;font-weight:700;display:inline-flex;align-items:center;gap:6px;background:var(--gold);color:var(--on-acc,#1a1a1a);border:0;border-radius:10px;padding:8px 14px;cursor:pointer;white-space:nowrap;box-shadow:0 2px 8px #0004;transition:.15s}
+.bk:hover{filter:brightness(1.1);transform:translateX(-2px)}
+.bk .ico{width:1.1em;height:1.1em}
+.bk small{font:500 .75rem Consolas,monospace;opacity:.75}
+.itools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.itools>.bcr{margin:0}
+.itools>.ibr{flex:1 1 280px}
+.itools>.pbar{flex:1 1 200px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 12px;gap:10px}
+@media(max-width:420px){.bk small{display:none}}
