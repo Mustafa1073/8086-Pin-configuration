@@ -1,4 +1,4 @@
-const CACHE='8086-pins-v4';
+const CACHE='8086-pins-v5';
 const SHELL=['./','index.html','styles.css','script.js','icon.svg','favicon.svg','manifest.webmanifest','icons/icon-192.png','icons/icon-512.png','icons/icon-maskable-512.png','icons/apple-touch-icon.png','icons/favicon-32.png','icons/tke-86.png'];
 
 self.addEventListener('install',e=>{

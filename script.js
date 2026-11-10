@@ -339,8 +339,8 @@ function toggleSec(b,sec){if(iv){prevSec=null;closeInt()}const open=sec.hidden;S
 bExp.onclick=()=>toggleSec(bExp,mdl);
 document.addEventListener('keydown',e=>{if(e.key!='Escape')return;if(!menu.hidden){menu.hidden=true;return}if(iv){if(path.length>1){path.pop();dir='out';renderInt();show()}else closeInt()}});
 
-const RT={ar:{mb:'جدول الأطراف',mg:'المسرد',rh:'جدول الأطراف الكامل',rp:'الأطراف الأربعون بالترتيب. الأطراف 24–31 لها اسمان بحسب النمط (Min / Max). يمكن طباعة الجدول والمسرد كورقة مراجعة.',pr:'طباعة',
- cols:['الطرف','الاسم','الفئة','الاتجاه','الوظيفة','لماذا؟'],gh:'مسرد المصطلحات',gp:'مصطلحات تتكرر في شرح الأطراف.'},
+const RT={ar:{mb:'جدول الأطراف',mg:'قاموس المصطلحات',rh:'جدول الأطراف الكامل',rp:'الأطراف الأربعون بالترتيب. الأطراف 24–31 لها اسمان بحسب النمط (Min / Max). يمكن طباعة الجدول والقاموس كورقة مراجعة.',pr:'طباعة',
+ cols:['الطرف','الاسم','الفئة','الاتجاه','الوظيفة','لماذا؟'],gh:'قاموس المصطلحات',gp:'مصطلحات تتكرر في شرح الأطراف.'},
 en:{mb:'Pin table',mg:'Glossary',rh:'Full pin table',rp:'All 40 pins in order. Pins 24-31 have two names depending on the mode (Min / Max). The table and glossary can be printed as a revision sheet.',pr:'Print',
  cols:['Pin','Name','Category','Direction','Function','Why?'],gh:'Glossary',gp:'Terms that keep appearing in the pin explanations.'}};
 const G={ar:[
@@ -422,12 +422,12 @@ tn:['T1: the address is output on AD0-AD15, A16-A19 and BHE, and ALE pulses so t
 ch:'Typical connection (Minimum Mode)',cp:'The support chips an 8086 needs to become a system: a clock generator, latches to demultiplex the address, and data buffers.',
 cn:['8284A: generates CLK and synchronizes RESET and READY, so the CPU is never wired to a plain oscillator.','74LS373 (three chips): store A0-A19 and BHE on the ALE pulse so the address stays fixed after AD0-AD15 turns into data.','74LS245 (two chips): bidirectional data buffers, controlled by DEN (enable) and DT/R (direction).','RD, WR and M/IO go straight to memory and devices; INTR comes from the 8259, which the CPU answers with INTA.']}};
 Object.assign(XT.ar,{rd:'قراءة (Read)',wr:'كتابة (Write)',tw:'إضافة حالة انتظار Tw',thw:'مخطط توقيت دورة الكتابة (Minimum Mode)',
-wn:['T1: يخرج العنوان على AD0–AD15 وA16–A19 وBHE وتنبض ALE لتحفظه المثبّتات، ويصبح DT/R عالياً لأن المعالج سيرسل.','T2: تنخفض WR وتتفعّل DEN، وتخرج البيانات من المعالج على AD0–AD15 مباشرة دون حالة Hi-Z.','T3: تبقى البيانات ثابتة لتكتبها الذاكرة، ويفحص المعالج READY في نهاية هذه الحالة.','T4: ترتفع WR وDEN وتنتهي الدورة؛ وتلتقط الذاكرة البيانات عند الحافة الصاعدة لـ WR.'],
-wt:'Tw: حالة انتظار تعيد T3 دون تغيير في الإشارات، لأن READY كانت منخفضة عند نهاية T3، وتتكرر إلى أن ترتفع READY.',
+wn:['T1: يخرج العنوان على AD0–AD15 وA16–A19 وBHE وتنبض ALE لتحفظه المثبّتات، ويصبح DT/R عالياً لأن المعالج سيرسل.','T2: تنخفض WR وتتفعّل DEN، وتخرج البيانات من المعالج على AD0–AD15 مباشرة دون حالة Hi-Z.','T3: تبقى البيانات ثابتة لتكتبها الذاكرة، وكان المعالج قد فحص READY في نهاية T2.','T4: ترتفع WR وDEN وتنتهي الدورة؛ وتلتقط الذاكرة البيانات عند الحافة الصاعدة لـ WR.'],
+wt:'Tw: حالة انتظار تعيد T3 دون تغيير في الإشارات، لأن READY كانت منخفضة عند نهاية T2 (تُفحص عندها)، وتتكرر إلى أن ترتفع READY.',
 hint:'اضغط اسم أي إشارة لعرض تفاصيل طرفها، واضغط أي بند من الشرح لتظليل حالته على المخطط.'});
 Object.assign(XT.en,{rd:'Read',wr:'Write',tw:'Add wait state Tw',thw:'Write cycle timing (Minimum Mode)',
-wn:['T1: the address goes out on AD0-AD15, A16-A19 and BHE, ALE pulses so the latches store it, and DT/R goes high because the CPU will transmit.','T2: WR goes low and DEN is enabled; the CPU drives the data onto AD0-AD15 right away, with no Hi-Z state.','T3: the data stays stable for the memory to store, and the CPU checks READY at the end of this state.','T4: WR and DEN go high and the cycle ends; the memory latches the data on the rising edge of WR.'],
-wt:'Tw: a wait state that repeats T3 with no signal change, because READY was low at the end of T3; it repeats until READY goes high.',
+wn:['T1: the address goes out on AD0-AD15, A16-A19 and BHE, ALE pulses so the latches store it, and DT/R goes high because the CPU will transmit.','T2: WR goes low and DEN is enabled; the CPU drives the data onto AD0-AD15 right away, with no Hi-Z state.','T3: the data stays stable for the memory to store, and the CPU already sampled READY at the end of T2.','T4: WR and DEN go high and the cycle ends; the memory latches the data on the rising edge of WR.'],
+wt:'Tw: a wait state that repeats T3 with no signal change, because READY was low at the end of T2, where it is sampled; it repeats until READY goes high.',
 hint:'Tap any signal name to see its pin details, and tap any note to highlight its state on the diagram.'});
 let tmM='r',tmW=0,CW=160;
 const WV=(y,pts)=>'<path class="ln" d="'+pts.map(([t,l],i)=>{const x=120+t*CW,yy=y+(l?0:20);return i?'H'+x+'V'+yy:'M'+x+' '+yy}).join('')+'H760"/>';
@@ -446,7 +446,7 @@ function renderExtra(){const x=XT[lang],w=tmM=='w',n=4+tmW;CW=640/n;bTim.innerHT
  +BD(Y(3),0,1,'A16-A19')+BD(Y(3),1,n,'S3-S6 status')+BD(Y(4),0,1,'BHE')+BD(Y(4),1,n,'S7')+WV(Y(5),[[0,1]])
  +WV(Y(6),w?[[0,1]]:[[0,1],[1.1,0],[n-.9,1]])+WV(Y(7),w?[[0,1],[1.1,0],[n-.9,1]]:[[0,1]])+WV(Y(8),[[0,w?1:0]])+WV(Y(9),[[0,1],[1.1,0],[n-.4,1]])
  +WV(Y(10),tmW?[[0,1],[1.7,0],[3.5,1]]:[[0,1]])
- +'<path class="gd" style="stroke:var(--gold)" d="M'+(120+3*CW)+' 28V'+(Y(10)+30)+'"/><text class="sm" x="'+(120+3*CW)+'" y="'+(Y(10)+44)+'" text-anchor="middle">READY sampled</text>';
+ +'<path class="gd" style="stroke:var(--gold)" d="M'+(120+2*CW)+' 28V'+(Y(10)+30)+'"/><text class="sm" x="'+(120+2*CW)+'" y="'+(Y(10)+44)+'" text-anchor="middle">READY sampled</text>';
  const T=w?x.wn:x.tn,L=[T[0],T[1],T[2]].concat(tmW?[x.wt]:[],[T[3]]);
  const ctl='<div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0"><button class="chip" data-tm="r" aria-pressed="'+!w+'">'+x.rd+'</button><button class="chip" data-tm="w" aria-pressed="'+w+'">'+x.wr+'</button><button class="chip" data-tw="1" aria-pressed="'+!!tmW+'">'+x.tw+'</button></div>';
  sTim.innerHTML='<h2>'+(w?x.thw:x.th)+'</h2><p>'+x.tp+'</p>'+ctl+'<svg class="sv" viewBox="0 0 770 470" role="img" aria-label="'+(w?x.thw:x.th)+'">'+g+'</svg><p style="color:var(--mut);font-size:.85rem;margin:8px 0">'+x.hint+'</p><div class="card"><ul>'+L.map((a,i)=>'<li data-ts="'+i+'" style="cursor:pointer">'+a+'</li>').join('')+'</ul></div>';
@@ -566,3 +566,50 @@ zRange();setZ(dz(0));applyLang();
  }).catch(()=>{}));
  navigator.serviceWorker.addEventListener('controllerchange',()=>{if(state!=='u'||reloading)return;reloading=true;location.reload()});
 })();
+
+/* ===== إضافات ملزمة دورة الناقل ===== */
+let tmSimp=0,tmF=5;
+const X2={ar:{simp:'عرض مبسط (الشكلان 8-9 و8-10)',cH:'حاسبة التوقيت',cF:'تردد الساعة (MHz)',cT:'زمن T الواحدة',cB:'زمن دورة الناقل',cR:'عدد النقلات في الثانية',cM:'عند 5 MHz: 800 ns لكل دورة، أي 1.25 مليون نقلة في الثانية، ويصل 8086/8088 إلى 2.5 MIPS في دفعات بفضل طابور الأوامر. كل حالة Tw تضيف زمن T واحدة.',
+sH:'خطوات دورة الناقل (من الخلاصة)',
+st:['عندما يكون المعالج جاهزاً لبدء دورة الناقل يُعطي نبضة على ALE أثناء T1. قبل الحافة الهابطة لـ ALE يجب أن تكون إشارات العنوان وBHE وM/IO وDEN وDT/R مستقرة، أي DEN = high وDT/R = 0 للإدخال أو DT/R = 1 للإخراج.','عند الحافة الهابطة لـ ALE تحفظ الشرائح 74LS373 أو 8282 العنوان.','في T2 يُعطَّل العنوان وتظهر S3–S7 على AD16/S3–AD19/S6 وBHE/S7، ويُخفَض DEN لتفعيل العازل (Transceiver).','في عملية الإدخال تُفعَّل RD خلال T2 وتدخل AD0–AD15 حالة المعاوقة العالية استعداداً لاستقبال البيانات.','إن استطاعت الذاكرة أو واجهة I/O إتمام النقل فوراً فلا توجد حالات انتظار وتخرج البيانات على الناقل أثناء T3.','بعد أن يقبل المعالج البيانات تُرفع RD إلى High عند بداية T4.','عند اكتشاف هذا الانتقال في T4 تعطّل الذاكرة أو جهاز I/O إشارات بياناتها.','في عملية الإخراج يُعطي المعالج WR = 0 ثم البيانات على ناقل البيانات أثناء T2.','في T4 تُرفع WR إلى High وتُعطَّل إشارات البيانات.','في الإدخال والإخراج معاً يُرفع DEN في T4 لتعطيل العازل، ويُضبط M/IO حسب النقل التالي عند هذا الوقت أو في T1 التالية. لذلك طول دورة الناقل في 8086 هو 4 نبضات ساعة. وإذا بقي الناقل غير نشط بعد انتهاء الدورة فإن الفراغ بين الدورات المتتالية تملؤه نبضات ساعة خاملة (Idle).'],
+tw:'عندما لا تستطيع الذاكرة أو جهاز I/O الاستجابة بسرعة تُدرَج حالات انتظار (Tw) بين T3 وT4 بخفض دخل READY، ونشاط الناقل أثناء Tw مثل نشاطه أثناء T3.',
+wH:'أزمنة الكتابة وزمن الوصول',
+wn:['الفرق الرئيسي بين القراءة والكتابة: تحل WR محل RD، ويحمل ناقل البيانات معلومات إلى الذاكرة، ويبقى DT/R = 1 طوال الدورة بدلاً من 0.','تُكتب البيانات في الذاكرة عند الحافة الصاعدة لـ WR، لذلك يهم الزمن بين ارتفاع WR وإزالة البيانات: TWHDX = 88 ns عند ساعة 5 MHz. زمن الإمساك (Hold) المطلوب في الذاكرة أقل من ذلك بكثير، وغالباً 0 ns.','عرض نبضة WR هو TWLWH = 340 ns عند 5 MHz، وهذا متوافق مع معظم الذاكرات التي زمن وصولها 400 ns أو أقل.','زمن الوصول (Access time) هو الزمن الثابت الذي يتيحه المعالج للذاكرة لتعطي البيانات في القراءة، ويُختار نوع الذاكرة على أساسه. المخطط لا يعطيه مباشرة، بل يُحسب بدمج عدة أزمنة: نحدد أولاً نقطة أخذ العينة في T3، وهي نهاية T3 حيث يلتقط المعالج ناقل البيانات.'],
+pH:'بارامترات الشكل 8-11',pN:'الملزمة تعرض الرموز على المخطط دون قيمها، والمعاني أدناه مأخوذة من أسماء الرموز.',
+pr:[['TCLCL','زمن دورة الساعة'],['TCHCL','زمن بقاء الساعة عالية'],['TCLCH','زمن بقاء الساعة منخفضة'],['TCLAV','من هبوط الساعة إلى صلاحية العنوان'],['TCLAX','إمساك العنوان بعد هبوط الساعة'],['TCLLH','من الساعة إلى ارتفاع ALE'],['TCHLL','من الساعة إلى هبوط ALE'],['TLHLL','عرض نبضة ALE'],['TLLAX','إمساك العنوان بعد هبوط ALE'],['TAVAL','العنوان صالح قبل هبوط ALE'],['TCLAZ','من الساعة إلى طفو العنوان'],['TAZRL','من طفو العنوان إلى تفعيل RD'],['TCLRL','من الساعة إلى هبوط RD'],['TRLRH','عرض نبضة RD'],['TCLRH','من الساعة إلى ارتفاع RD'],['TRHAV','من ارتفاع RD إلى العنوان التالي'],['TDVCL','البيانات صالحة قبل هبوط الساعة (Setup)'],['TCLDX','إمساك البيانات بعد الساعة (Hold)'],['TRYLCL / TRYHCH','تهيئة READY (Setup)'],['TCHRYX','إمساك READY (Hold)'],['TCHCTV','من الساعة إلى صلاحية إشارة تحكم (مثل DT/R)'],['TCVCTV / TCVCTX','من الساعة إلى تفعيل / تعطيل DEN']],
+dH:'8086 مقابل 8088',dn:'توقيت قراءة 8086 مطابق لـ 8088 عدا أن 8086 له 16 بت بيانات بدلاً من 8. الشكل 8-11 مرسوم لـ 8088 في Minimum Mode، والشكل 8-13 لكتابته، ولا تُعرض مخططات منفصلة لـ 8086 لأنها متقاربة جداً. كذلك تسمى إشارة M/IO في 8086 باسم IO/M في 8088.',
+cols:['الرمز','المعنى']},
+en:{simp:'Simplified view (Figs 8-9 and 8-10)',cH:'Timing calculator',cF:'Clock frequency (MHz)',cT:'One T state',cB:'Bus cycle time',cR:'Transfers per second',cM:'At 5 MHz: 800 ns per bus cycle, i.e. 1.25 million transfers per second; the 8086/8088 reaches 2.5 MIPS in bursts thanks to the instruction queue. Each Tw adds one T period.',
+sH:'Bus cycle steps (from the conclusion)',
+st:['When the CPU is ready to start a bus cycle it applies a pulse to ALE during T1. Before the falling edge of ALE, the address, BHE, M/IO, DEN and DT/R must be stable, i.e. DEN = high and DT/R = 0 for input or DT/R = 1 for output.','At the trailing edge of ALE, the 74LS373 or 8282 latches store the address.','During T2 the address signals are disabled and S3-S7 are available on AD16/S3-AD19/S6 and BHE/S7. DEN is also lowered to enable the transceiver.','For an input operation, RD is activated during T2 and AD0-AD15 go to high impedance in preparation for input.','If the memory or I/O interface can perform the transfer immediately, there are no wait states and the data is output on the bus during T3.','After the data is accepted by the CPU, RD is raised high at the beginning of T4.','On detecting this transition during T4, the memory or I/O device disables its data signals.','For an output operation, the CPU applies WR = 0 and then the data on the data bus during T2.','In T4, WR is raised high and the data signals are disabled.','For either input or output, DEN is raised during T4 to disable the transceiver. M/IO is also set according to the next transfer at this time or during the next T1. Thus the 8086 bus cycle is four clocks. If the bus is to stay inactive after the cycle, the gap between successive cycles is filled by idle clock cycles.'],
+tw:'When the memory or I/O device cannot respond quickly, wait states (Tw) are inserted between T3 and T4 by pulling READY low; bus activity during Tw is the same as during T3.',
+wH:'Write timing and access time',
+wn:['Main difference from read: WR replaces RD, the data bus carries information to the memory, and DT/R stays 1 throughout the cycle instead of 0.','Memory data are written at the rising edge of WR, so the time from WR going high to the data being removed matters: TWHDX = 88 ns at a 5 MHz clock. The hold time memories need is much less, often 0 ns.','The WR pulse width is TWLWH = 340 ns at 5 MHz, compatible with most memories having an access time of 400 ns or less.','Access time is the fixed time the CPU allows the memory to deliver data in a read, and memory is chosen by it. The diagram does not give it directly; several times are combined. First find the sampling point in T3, which is the end of T3 where the CPU samples the data bus.'],
+pH:'Fig 8-11 parameters',pN:'The handout shows the symbols on the diagram without their values; the meanings below are read from the symbol names.',
+pr:[['TCLCL','Clock cycle period'],['TCHCL','Clock high time'],['TCLCH','Clock low time'],['TCLAV','Clock low to address valid'],['TCLAX','Address hold after clock low'],['TCLLH','Clock to ALE high'],['TCHLL','Clock to ALE low'],['TLHLL','ALE pulse width'],['TLLAX','Address hold after ALE low'],['TAVAL','Address valid before ALE low'],['TCLAZ','Clock to address float'],['TAZRL','Address float to RD active'],['TCLRL','Clock to RD low'],['TRLRH','RD pulse width'],['TCLRH','Clock to RD high'],['TRHAV','RD high to next address'],['TDVCL','Data valid before clock low (setup)'],['TCLDX','Data hold after clock (hold)'],['TRYLCL / TRYHCH','READY setup'],['TCHRYX','READY hold'],['TCHCTV','Clock to control valid (e.g. DT/R)'],['TCVCTV / TCVCTX','Clock to DEN active / inactive']],
+dH:'8086 vs 8088',dn:'The 8086 read timing is identical to the 8088 except that the 8086 has 16 data bits instead of 8. Fig 8-11 is drawn for the 8088 in Minimum Mode and Fig 8-13 for its write; no separate 8086 diagrams are shown because they are nearly identical. The M/IO signal of the 8086 is called IO/M on the 8088.',
+cols:['Symbol','Meaning']}};
+function simpSvg(){const w=tmM=='w',CW=160,Y=i=>40+i*55;let g='';
+ for(let i=0;i<=4;i++)g+='<path class="gd" d="M'+(120+i*CW)+' 28V250"/>';
+ ['T1','T2','T3','T4'].forEach((s,i)=>g+='<text class="bt" x="'+(120+(i+.5)*CW)+'" y="18" text-anchor="middle">'+s+'</text>');
+ ['CLK','ADDRESS','AD0-AD15',w?ob('WR'):ob('RD')].forEach((r,i)=>g+='<text x="6" y="'+(Y(i)+15)+'">'+r+'</text>');
+ const ck=[];for(let k=0;k<4;k++)ck.push([k,1],[k+1/3,0]);
+ const bd=(y,a,b,t)=>{const x0=120+a*CW,x1=120+b*CW;return '<path class="ln" d="M'+x0+' '+(y+10)+'L'+(x0+6)+' '+y+'H'+(x1-6)+'L'+x1+' '+(y+10)+'L'+(x1-6)+' '+(y+20)+'H'+(x0+6)+'Z"/><text x="'+(x0+x1)/2+'" y="'+(y+15)+'" text-anchor="middle">'+t+'</text>'};
+ g+=WV(Y(0),ck)+bd(Y(1),.1,3.8,'Valid address')+bd(Y(2),.1,1,'Address')+(w?bd(Y(2),1,3.8,'Data written to memory'):bd(Y(2),2,3.6,'Data from memory'))+WV(Y(3),[[0,1],[1.1,0],[3.4,1]]);
+ return '<svg class="sv" viewBox="0 0 770 270" role="img">'+g+'</svg>'}
+const _rE=renderExtra;
+renderExtra=function(){_rE();const x=X2[lang],w=tmM=='w';
+ const sel='<div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0"><button class="chip" id="bSimp" aria-pressed="'+!!tmSimp+'">'+x.simp+'</button></div>';
+ if(tmSimp){const sv=sTim.querySelector('svg.sv');if(sv)sv.outerHTML=simpSvg()}
+ const h=sTim.querySelector('h2');h.insertAdjacentHTML('afterend',sel);
+ sTim.querySelector('#bSimp').onclick=()=>{tmSimp^=1;renderExtra()};
+ const calc=()=>{const f=Math.max(.1,+tmF||5),T=1000/f,B=T*(4+tmW);return[T.toFixed(0),B.toFixed(0),(1000/B).toFixed(2)]};
+ const c=calc(),tr=(a,b)=>'<tr><td>'+a+'</td><td>'+b+'</td></tr>';
+ sTim.insertAdjacentHTML('beforeend','<div class="card"><h3>'+x.cH+'</h3><p><label>'+x.cF+' <input type="number" id="cf" min="0.1" step="0.5" value="'+tmF+'" style="width:5em"></label></p><ul><li>'+x.cT+': <b id="c1">'+c[0]+' ns</b></li><li>'+x.cB+': <b id="c2">'+c[1]+' ns</b></li><li>'+x.cR+': <b id="c3">'+c[2]+' M</b></li></ul><p style="color:var(--mut);font-size:.85rem">'+x.cM+'</p></div>'
+ +'<div class="card"><h3>'+x.sH+'</h3><ol>'+x.st.map(s=>'<li>'+s+'</li>').join('')+'</ol><p>'+x.tw+'</p></div>'
+ +'<div class="card"><h3>'+x.wH+'</h3><ul>'+x.wn.map(s=>'<li>'+s+'</li>').join('')+'</ul></div>'
+ +'<div class="card"><h3>'+x.dH+'</h3><p>'+x.dn+'</p></div>'
+ +'<details class="card"><summary><b>'+x.pH+'</b></summary><p style="color:var(--mut);font-size:.85rem">'+x.pN+'</p><div class="tbl"><table class="cmp"><tr><th>'+x.cols[0]+'</th><th>'+x.cols[1]+'</th></tr>'+x.pr.map(r=>tr(r[0],r[1])).join('')+'</table></div></details>');
+ sTim.querySelector('#cf').oninput=e=>{tmF=e.target.value;const c=calc();c1.textContent=c[0]+' ns';c2.textContent=c[1]+' ns';c3.textContent=c[2]+' M'};
+};
+if(typeof sTim!=='undefined'&&!sTim.hidden)renderExtra();
